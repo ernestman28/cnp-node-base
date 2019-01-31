@@ -1,35 +1,39 @@
 name: Nodejs base images pipeline
 
 trigger:
-  branches:
-    include:
-      - refs/tags/*
+  batch: true
+  paths:
+    exclude:
+      - README.md
 
 pr:
-  branches:
-    include:
-      - master
+  - master
 
-pool:
-  vmImage: "Ubuntu-16.04"
+variables:
+  alpineImageName: hmcts/base/node/alpine-lts-10
 
-# variables:
-#   azureSubscriptionEndpoint: azurerm-sandbox
-#   azureContainerRegistry: hmctssandbox.azurecr.io
-#   imageName: hmcts/base/node/alpine-lts-10
-#   imageDockerfilePath: 10/alpine/Dockerfile
+jobs:
+  - job: Build
+    pool:
+      vmImage: "Ubuntu-16.04"
+    steps:
+      - template: steps/login-build-tag.yml
+        parameters:
+          azureSubscriptionEndpoint: azurerm-sandbox
+          azureContainerRegistry: hmctssandbox.azurecr.io
+          imageDockerfilePath: 10/alpine/Dockerfile
+          imageName: $(alpineImageName)
 
-steps:
-  - template: steps/login-build-tag.yml
-    parameters:
-      azureSubscriptionEndpoint: azurerm-sandbox
-      azureContainerRegistry: hmctssandbox.azurecr.io
-      imageDockerfilePath: 10/alpine/Dockerfile
-      imageName: hmcts/base/node/alpine-lts-10
-  # - task: Docker@1
-  #   displayName: Push image
-  #   inputs:
-  #     command: push
-  #     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
-  #     azureContainerRegistry: $(azureContainerRegistry)
-  #     imageName: $(imageName):latest
+  - job: Sandbox_Release
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+    pool:
+      vmImage: Ubuntu 16.04
+    steps:
+      - task: Docker@1
+        displayName: Push image
+        inputs:
+          command: push
+          azureSubscriptionEndpoint: azurerm-sandbox
+          azureContainerRegistry: hmctssandbox.azurecr.io
+          imageName: $(alpineImageName):latest
