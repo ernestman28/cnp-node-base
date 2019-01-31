@@ -9,31 +9,28 @@ trigger:
 pr:
   - master
 
-variables:
-  alpineImageName: hmcts/base/node/alpine-lts-10
-
 jobs:
   - job: Build
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
-      - template: steps/login-build-tag.yml
+      - template: steps/build.yml
         parameters:
           azureSubscriptionEndpoint: azurerm-sandbox
           azureContainerRegistry: hmctssandbox.azurecr.io
           imageDockerfilePath: 10/alpine/Dockerfile
-          imageName: $(alpineImageName)
+          imageName: hmcts/base/node/alpine-lts-10
 
-  - job: Sandbox_Release
+  - job: SandboxRelease
+    displayName: Sandbox Release
     dependsOn: Build
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
       vmImage: Ubuntu 16.04
     steps:
-      - task: Docker@1
-        displayName: Push image
-        inputs:
-          command: push
+      - template: steps/release.yml
+        parameters:
           azureSubscriptionEndpoint: azurerm-sandbox
           azureContainerRegistry: hmctssandbox.azurecr.io
-          imageName: $(alpineImageName):latest
+          imageDockerfilePath: 10/alpine/Dockerfile
+          imageName: hmcts/base/node/alpine-lts-10

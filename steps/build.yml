@@ -13,12 +13,12 @@ steps:
       azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       dockerFile: ${{ parameters.imageDockerfilePath }}
-      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
+      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.BuildId)
+
   - task: Docker@1
-    displayName: Tag image
+    displayName: Push image
     inputs:
-      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
-      azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
-      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
-      arguments: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.BuildId)
-      command: tag
+      command: push
+      azureSubscriptionEndpoint: azurerm-sandbox
+      azureContainerRegistry: hmctssandbox.azurecr.io
+      imageName: ${{ parameters.azureContainerRegistry }}/${{parameters.imageName}}:$(Build.BuildId)

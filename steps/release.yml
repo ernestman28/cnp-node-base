@@ -1,0 +1,24 @@
+steps:
+  - task: Docker@1
+    displayName: Container registry login
+    inputs:
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
+      azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      command: login
+  - script: docker pull ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.BuildId)
+    displayName: Pull tagged image
+  - task: Docker@1
+    displayName: Tag image
+    inputs:
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
+      azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.BuildId)
+      arguments: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
+      command: tag
+  - task: Docker@1
+    displayName: Push image
+    inputs:
+      command: push
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
+      azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
