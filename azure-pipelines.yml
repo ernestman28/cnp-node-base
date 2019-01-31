@@ -1,0 +1,28 @@
+name: Nodejs base images pipeline
+
+trigger:
+  branches:
+    include:
+      - refs/tags/*
+
+pr:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: "Ubuntu-16.04"
+
+variables:
+  azureSubscriptionEndpoint: azurerm-sandbox
+  azureContainerRegistry: hmctssandbox.azurecr.io
+  imageName: hmcts/base/node/alpine-lts-10
+
+steps:
+  - task: Docker@1
+    displayName: Container registry login
+    inputs:
+      azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+      azureContainerRegistry: $(azureContainerRegistry)
+      command: login
+  # - script: docker build -t $(azureContainerRegistry)/$(imageName) ./10/alpine/
