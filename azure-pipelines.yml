@@ -10,7 +10,7 @@ pr:
   - master
 
 jobs:
-  - job: Build-Alpine
+  - job: buildAlpine
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
@@ -21,9 +21,9 @@ jobs:
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
 
-  - job: SandboxRelease-Alpine
+  - job: sandboxReleaseAlpine
     displayName: Sandbox Release
-    dependsOn: Build-Alpine
+    dependsOn: buildAlpine
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
       vmImage: Ubuntu 16.04
@@ -35,7 +35,7 @@ jobs:
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
 
-  - job: Build-Debian
+  - job: buildDebian
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
@@ -46,9 +46,9 @@ jobs:
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
 
-  - job: SandboxRelease-Debian
-    displayName: Sandbox Release
-    dependsOn: Build-Debian
+  - job: sandboxReleaseDebian
+    displayName: Sandbox Release Debian
+    dependsOn: buildDebian
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
       vmImage: Ubuntu 16.04
