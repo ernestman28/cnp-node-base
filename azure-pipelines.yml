@@ -19,13 +19,13 @@ jobs:
     steps:
       - template: steps/build.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-sandbox
-          azureContainerRegistry: hmctssandbox.azurecr.io
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
 
-  - job: sandboxReleaseAlpine
-    displayName: Sandbox Release
+  - job: releaseAlpine
+    displayName: releaseAlpine
     dependsOn: buildAlpine
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
@@ -33,32 +33,32 @@ jobs:
     steps:
       - template: steps/release.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-sandbox
-          azureContainerRegistry: hmctssandbox.azurecr.io
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
 
-  - job: buildDebian
+  - job: buildStretchSlim
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
       - template: steps/build.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-sandbox
-          azureContainerRegistry: hmctssandbox.azurecr.io
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
 
-  - job: sandboxReleaseDebian
-    displayName: Sandbox Release Debian
-    dependsOn: buildDebian
+  - job: releaseStretchSlim
+    displayName: Release Stretch Slim
+    dependsOn: buildStretchSlim
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
       vmImage: Ubuntu 16.04
     steps:
       - template: steps/release.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-sandbox
-          azureContainerRegistry: hmctssandbox.azurecr.io
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
