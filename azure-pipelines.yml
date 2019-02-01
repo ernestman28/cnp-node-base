@@ -2,6 +2,9 @@ name: Nodejs base images pipeline
 
 trigger:
   batch: true
+  branches:
+    include:
+    - master
   paths:
     exclude:
       - README.md
