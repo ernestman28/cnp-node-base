@@ -19,7 +19,7 @@ jobs:
     steps:
       - template: steps/build.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
+          azureSubscriptionEndpoint: azurerm-prod
           azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
@@ -33,7 +33,7 @@ jobs:
     steps:
       - template: steps/release.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
+          azureSubscriptionEndpoint: azurerm-prod
           azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
@@ -44,7 +44,7 @@ jobs:
     steps:
       - template: steps/build.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
+          azureSubscriptionEndpoint: azurerm-prod
           azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
@@ -58,7 +58,7 @@ jobs:
     steps:
       - template: steps/release.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
+          azureSubscriptionEndpoint: azurerm-prod
           azureContainerRegistry: hmcts.azurecr.io
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
