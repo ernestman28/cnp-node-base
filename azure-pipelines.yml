@@ -10,7 +10,7 @@ pr:
   - master
 
 jobs:
-  - job: Build
+  - job: Build-Alpine
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
@@ -21,9 +21,9 @@ jobs:
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
 
-  - job: SandboxRelease
+  - job: SandboxRelease-Alpine
     displayName: Sandbox Release
-    dependsOn: Build
+    dependsOn: Build-Alpine
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
       vmImage: Ubuntu 16.04
@@ -34,3 +34,28 @@ jobs:
           azureContainerRegistry: hmctssandbox.azurecr.io
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
+
+  - job: Build-Debian
+    pool:
+      vmImage: "Ubuntu-16.04"
+    steps:
+      - template: steps/build.yml
+        parameters:
+          azureSubscriptionEndpoint: azurerm-sandbox
+          azureContainerRegistry: hmctssandbox.azurecr.io
+          imageDockerfilePath: 10/stretch-slim/Dockerfile
+          imageName: hmcts/base/node/stretch-slim-lts-10
+
+  - job: SandboxRelease-Debian
+    displayName: Sandbox Release
+    dependsOn: Build-Debian
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+    pool:
+      vmImage: Ubuntu 16.04
+    steps:
+      - template: steps/release.yml
+        parameters:
+          azureSubscriptionEndpoint: azurerm-sandbox
+          azureContainerRegistry: hmctssandbox.azurecr.io
+          imageDockerfilePath: 10/stretch-slim/Dockerfile
+          imageName: hmcts/base/node/stretch-slim-lts-10
