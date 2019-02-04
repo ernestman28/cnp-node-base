@@ -19,6 +19,6 @@ steps:
     displayName: Push image
     inputs:
       command: push
-      azureSubscriptionEndpoint: azurerm-prod
+      azureSubscriptionEndpoint: azurerm-nonprod
       azureContainerRegistry: hmcts.azurecr.io
       imageName: ${{ parameters.azureContainerRegistry }}/${{parameters.imageName}}:$(Build.BuildId)
