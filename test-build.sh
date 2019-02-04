@@ -7,7 +7,6 @@
 # $ ./test-build.sh <image tag> <image version>
 #
 
-
 set -euo pipefail
 
 info() {
@@ -26,12 +25,11 @@ removeTrailingspaces () {
 tag=${1}
 version=${2-latest}
 
+info "Testing ${tag}:${version}"
+
 testUser() {
-
-    local whoami
     local defaultUser
-
-    info "Testing ${tag}:${version}"
+    local whoami
 
     defaultUser="hmcts"
     whoami=$(echo `docker run -it ${tag}:${version} whoami` | removeTrailingspaces)
@@ -43,4 +41,34 @@ testUser() {
     fi
 }
 
+testWorkdir() {
+    local defaultWorkdir
+    local workDir
+
+    defaultWorkdir="/opt/app"
+    workDir=$(echo `docker run -it ${tag}:${version} pwd` | removeTrailingspaces)
+
+    if [ $workDir != $defaultWorkdir ]; then
+        fatal "Workdir is not $defaultWorkdir. Workdir found: $workDir"
+    else
+        info "OK Workdir is $defaultWorkdir"
+    fi
+}
+
+testDefaultCmd() {
+    local defaultCmd
+    local cmd
+
+    defaultCmd="[\"yarn\",\"start\"]"
+    cmd=$(echo `docker inspect --format='{{json .Config.Cmd}}' ${tag}:${version}`)
+    
+    if [ $cmd != $defaultCmd ]; then
+        fatal "Default CMD is not $defaultCmd. Default CMD found: $cmd"
+    else
+        info "OK Default CMD is $defaultCmd"
+    fi
+}
+
 testUser
+testWorkdir
+testDefaultCmd
