@@ -28,16 +28,16 @@ version=${2-latest}
 info "Testing ${tag}:${version}"
 
 testUser() {
-    local defaultUser
+    local hmctsUser
     local whoami
 
-    defaultUser="hmcts"
-    whoami=$(echo `docker run ${tag}:${version} whoami` | removeTrailingspaces)
+    hmctsUser="hmcts"
+    whoami=$(echo `docker run ${tag}:${version} id -u ${hmctsUser}` | removeTrailingspaces)
 
-    if [[ "$whoami" != "$defaultUser" ]]; then
-        fatal "User is not $defaultUser. User found: $whoami"
+    if [[ "$whoami" != "1001" ]]; then
+        fatal "User $hmctsUser not found."
     else
-        info "OK User is $defaultUser"
+        info "OK User $hmctsUser found"
     fi
 }
 
