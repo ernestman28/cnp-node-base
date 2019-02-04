@@ -32,7 +32,7 @@ testUser() {
     local whoami
 
     defaultUser="hmcts"
-    whoami=$(echo `docker run -it ${tag}:${version} whoami` | removeTrailingspaces)
+    whoami=$(echo `docker run ${tag}:${version} whoami` | removeTrailingspaces)
 
     if [[ "$whoami" != "$defaultUser" ]]; then
         fatal "User is not $defaultUser. User found: $whoami"
@@ -46,7 +46,7 @@ testWorkdir() {
     local workDir
 
     defaultWorkdir="/opt/app"
-    workDir=$(echo `docker run -it ${tag}:${version} pwd` | removeTrailingspaces)
+    workDir=$(echo `docker run ${tag}:${version} pwd` | removeTrailingspaces)
 
     if [[ "$workDir" != "$defaultWorkdir" ]]; then
         fatal "Workdir is not $defaultWorkdir. Workdir found: $workDir"
