@@ -2,12 +2,12 @@
 
 [![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/NodeJS%20base%20image%20build?branchName=master)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=97&branchName=master)
 
-## Images
+## Images
 
-| Image:tag                                  | Content                                        |
-| ------------------------------------------ | ---------------------------------------------- |
-| hmcts/base/node/alpine-lts-10:latest       | Alpine distribution with nodeJS LTS 10 version |
-| hmcts/base/node/stretch-slim-lts-10:latest | Debian stretch and nodeJS LTS 10 version       |
+| Image:tag                                    | Content                                        |
+| -------------------------------------------- | ---------------------------------------------- |
+| `hmcts/base/node/alpine-lts-10:latest`       | Alpine distribution with nodeJS LTS 10 version |
+| `hmcts/base/node/stretch-slim-lts-10:latest` | Debian stretch and nodeJS LTS 10 version       |
 
 ## Background
 
