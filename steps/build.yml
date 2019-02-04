@@ -6,6 +6,16 @@ steps:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       command: login
 
+  - task: AzureCLI@1
+    displayName: 'Lint Dockerfile'
+    continueOnError: true # TODO In case of manifest deployment instead, remove when Helm is used exclusively
+    inputs:
+      azureSubscription:  'azurerm-nonprod'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+          npm install -g dockerlint
+          dockerlint ${{ parameters.imageDockerfilePath }}
+
   - task: Docker@1
     displayName: Build image
     inputs:
