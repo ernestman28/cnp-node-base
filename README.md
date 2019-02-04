@@ -21,4 +21,6 @@ When running your application you should run under the context of the `hmcts` us
 
 These images are to be used for application runtimes, nothing prevents the use of other intermediate images to build your projects.
 
-The default workdir has also been set to `/opt/app` within these images.
+The default workdir has been set to `/opt/app` within these images.
+
+The default cmd has also been set to `[yarn, start]` 
