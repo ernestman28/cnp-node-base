@@ -15,10 +15,10 @@
 
 These images are based on nodeJS official ones, with the addition of a specific `hmcts` user, used for consistent runtime parameters.
 
-By default when the image is intially launched it will run under the context of the 'root' user. This is to help support the install of dependencies during the build phase.
+By default when the image is intially launched it will run under the context of the `root` user. This is to help support the install of dependencies during the build phase.
 
-When running your application you should run under the context of the 'hmcts' user, this already exists as it is created in these base images.
+When running your application you should run under the context of the `hmcts` user, this already exists as it is created in these base images.
 
 These images are to be used for application runtimes, nothing prevents the use of other intermediate images to build your projects.
 
-The default workdir has also been set to /opt/app within these images.
+The default workdir has also been set to `/opt/app` within these images.
