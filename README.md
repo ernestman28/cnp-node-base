@@ -23,4 +23,4 @@ These images are to be used for application runtimes, nothing prevents the use o
 
 The default workdir has been set to `/opt/app` within these images.
 
-The default cmd has also been set to `[yarn, start]` 
+The default cmd has also been set to `["yarn", "start"]` 
