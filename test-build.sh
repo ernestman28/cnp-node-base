@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 #
-# Run a test build for all images.
+# Run a test build for a given image.
+# 
+# Sample usage:
+# 
+# $ ./test-build.sh <image tag> <image version>
+#
+
 
 set -euo pipefail
 
@@ -13,27 +19,28 @@ fatal() {
   exit 1
 }
 
+removeTrailingspaces () {
+    sed -e 's/[[:space:]]*$//' "$@"
+}
+
 tag=${1}
 version=${2-latest}
 
-test() {
+testUser() {
 
-    local tag
-    local version
     local whoami
-
-    tag=${1}
-    version=${2}
+    local defaultUser
 
     info "Testing ${tag}:${version}"
 
-    whoami=$(echo `docker run -it ${tag}:${version} whoami` | sed -e 's/[[:space:]]*$//')
+    defaultUser="hmcts"
+    whoami=$(echo `docker run -it ${tag}:${version} whoami` | removeTrailingspaces)
 
-    if [ $whoami != "hmcts" ]; then
-        fatal "User is not hmcts. User found: $whoami"
+    if [ $whoami != $defaultUser ]; then
+        fatal "User is not $defaultUser. User found: $whoami"
     else
-        info "OK User is hmcts"
+        info "OK User is $defaultUser"
     fi
 }
 
-test ${tag} ${version}
+testUser

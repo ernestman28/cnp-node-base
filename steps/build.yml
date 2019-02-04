@@ -7,12 +7,12 @@ steps:
       command: login
 
   - task: CmdLine@2
-    displayName: 'Lint Dockerfile'
+    displayName: Lint Dockerfile
     inputs:
       failOnStderr: true
       script: |
-          sudo npm install -g dockerlint
-          dockerlint ${{ parameters.imageDockerfilePath }}
+        sudo npm install -g dockerlint
+        dockerlint ${{ parameters.imageDockerfilePath }}
 
   - task: Docker@1
     displayName: Build image
@@ -22,6 +22,12 @@ steps:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       dockerFile: ${{ parameters.imageDockerfilePath }}
       imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
+
+  - task: CmdLine@2
+    displayName: Test image
+    inputs:
+      failOnStderr: true
+      script: ./test-build.sh ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }} $(Build.SourceVersion)
 
   - task: Docker@1
     displayName: Push image
