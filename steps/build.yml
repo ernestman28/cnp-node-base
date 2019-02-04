@@ -6,7 +6,7 @@ steps:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       command: login
 
-  - task: AzureCLI@1
+  - task: Bash@3
     displayName: 'Lint Dockerfile'
     continueOnError: true
     inputs:
