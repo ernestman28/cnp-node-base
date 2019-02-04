@@ -9,8 +9,8 @@
 | hmcts/base/node/alpine-lts-10:latest       | Alpine distribution with nodeJS LTS 10 version |
 | hmcts/base/node/stretch-slim-lts-10:latest | Debian stretch and nodeJS LTS 10 version       |
 
-## Reasoning
+## Background
 
 These images are based on nodeJS official ones, with the addition of a specific `hmcts` user, used for consistent runtime parameters.
 
-These images are ought to be used for application runtimes, nothing prevents the use of other intermediate images to build your projects.
+These images are to be used for application runtimes, nothing prevents the use of other intermediate images to build your projects.
