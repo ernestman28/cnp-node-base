@@ -34,7 +34,7 @@ testUser() {
     defaultUser="hmcts"
     whoami=$(echo `docker run -it ${tag}:${version} whoami` | removeTrailingspaces)
 
-    if [ $whoami != $defaultUser ]; then
+    if [[ "$whoami" != "$defaultUser" ]]; then
         fatal "User is not $defaultUser. User found: $whoami"
     else
         info "OK User is $defaultUser"
@@ -48,7 +48,7 @@ testWorkdir() {
     defaultWorkdir="/opt/app"
     workDir=$(echo `docker run -it ${tag}:${version} pwd` | removeTrailingspaces)
 
-    if [ $workDir != $defaultWorkdir ]; then
+    if [[ "$workDir" != "$defaultWorkdir" ]]; then
         fatal "Workdir is not $defaultWorkdir. Workdir found: $workDir"
     else
         info "OK Workdir is $defaultWorkdir"
@@ -62,7 +62,7 @@ testDefaultCmd() {
     defaultCmd="[\"yarn\",\"start\"]"
     cmd=$(echo `docker inspect --format='{{json .Config.Cmd}}' ${tag}:${version}`)
     
-    if [ $cmd != $defaultCmd ]; then
+    if [[ "$cmd" != "$defaultCmd" ]]; then
         fatal "Default CMD is not $defaultCmd. Default CMD found: $cmd"
     else
         info "OK Default CMD is $defaultCmd"
