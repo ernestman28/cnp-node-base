@@ -25,7 +25,7 @@ jobs:
           imageName: hmcts/base/node/alpine-lts-10
 
   - job: releaseAlpine
-    displayName: Sandbox Release
+    displayName: Release Alpine 
     dependsOn: buildAlpine
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:

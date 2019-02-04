@@ -6,6 +6,14 @@ steps:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       command: login
 
+  - task: CmdLine@2
+    displayName: 'Lint Dockerfile'
+    inputs:
+      failOnStderr: true
+      script: |
+          sudo npm install -g dockerlint
+          dockerlint ${{ parameters.imageDockerfilePath }}
+
   - task: Docker@1
     displayName: Build image
     inputs:
