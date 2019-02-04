@@ -5,14 +5,14 @@ steps:
       azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       command: login
-  - script: docker pull ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.BuildId)
+  - script: docker pull ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
     displayName: Pull tagged image
   - task: Docker@1
     displayName: Tag image
     inputs:
       azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
-      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.BuildId)
+      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
       arguments: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
       command: tag
   - task: Docker@1
