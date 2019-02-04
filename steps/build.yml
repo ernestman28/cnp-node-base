@@ -8,11 +8,9 @@ steps:
 
   - task: Bash@3
     displayName: 'Lint Dockerfile'
-    continueOnError: true
     inputs:
-      azureSubscription:  'azurerm-nonprod'
       targetType: 'inline'
-      scriptLocation: 'inlineScript'
+      failOnStderr: true
       inlineScript: |
           sudo npm install -g dockerlint
           dockerlint ${{ parameters.imageDockerfilePath }}
