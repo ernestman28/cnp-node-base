@@ -11,6 +11,7 @@ steps:
     continueOnError: true
     inputs:
       azureSubscription:  'azurerm-nonprod'
+      targetType: 'inline'
       scriptLocation: 'inlineScript'
       inlineScript: |
           sudo npm install -g dockerlint
