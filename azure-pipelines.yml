@@ -4,7 +4,7 @@ trigger:
   batch: true
   branches:
     include:
-    - master
+      - master
   paths:
     exclude:
       - README.md
@@ -13,7 +13,32 @@ pr:
   - master
 
 jobs:
-  - job: buildAlpine
+  - job: buildAlpine_8
+    pool:
+      vmImage: "Ubuntu-16.04"
+    steps:
+      - template: steps/build.yml
+        parameters:
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
+          imageDockerfilePath: 8/alpine/Dockerfile
+          imageName: hmcts/base/node/alpine-lts-8
+
+  - job: releaseAlpine_8
+    displayName: Release Alpine
+    dependsOn: buildAlpine_8
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+    pool:
+      vmImage: Ubuntu 16.04
+    steps:
+      - template: steps/release.yml
+        parameters:
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
+          imageDockerfilePath: 8/alpine/Dockerfile
+          imageName: hmcts/base/node/alpine-lts-8
+
+  - job: buildAlpine_10
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
@@ -24,9 +49,9 @@ jobs:
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
 
-  - job: releaseAlpine
-    displayName: Release Alpine 
-    dependsOn: buildAlpine
+  - job: releaseAlpine_10
+    displayName: Release Alpine
+    dependsOn: buildAlpine_10
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
       vmImage: Ubuntu 16.04
@@ -38,7 +63,32 @@ jobs:
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
 
-  - job: buildSlimStretch
+  - job: buildSlimStretch_8
+    pool:
+      vmImage: "Ubuntu-16.04"
+    steps:
+      - template: steps/build.yml
+        parameters:
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
+          imageDockerfilePath: 8/stretch-slim/Dockerfile
+          imageName: hmcts/base/node/stretch-slim-lts-8
+
+  - job: releaseSlimStretch_8
+    displayName: Release SlimStretch
+    dependsOn: buildSlimStretch_8
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+    pool:
+      vmImage: Ubuntu 16.04
+    steps:
+      - template: steps/release.yml
+        parameters:
+          azureSubscriptionEndpoint: azurerm-nonprod
+          azureContainerRegistry: hmcts.azurecr.io
+          imageDockerfilePath: 8/stretch-slim/Dockerfile
+          imageName: hmcts/base/node/stretch-slim-lts-8
+
+  - job: buildSlimStretch_10
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
@@ -49,9 +99,9 @@ jobs:
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
 
-  - job: releaseSlimStretch
+  - job: releaseSlimStretch_10
     displayName: Release SlimStretch
-    dependsOn: buildSlimStretch
+    dependsOn: buildSlimStretch_10
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     pool:
       vmImage: Ubuntu 16.04
