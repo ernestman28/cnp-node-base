@@ -62,3 +62,13 @@ FROM base as runtime
 COPY --from=build dist ./
 USER hmcts
 ```
+
+## Pulling base images locally
+
+You will need to be authenticated to pull those images from ACR:
+
+```bash
+$ az acr login --subscription <subscription ID> --name hmcts
+```
+
+The subscription ID can be found when you log in to Azure. Make sure you use the non-prod one as AKS has hitherto been used on staging environments only.
