@@ -32,12 +32,13 @@ testUser() {
     local whoami
 
     hmctsUser="hmcts"
-    whoami=$(echo `docker run ${tag}:${version} id -u ${hmctsUser}` | removeTrailingspaces)
+    expectedId="uid=1000(hmcts) gid=1000(hmcts) groups=1000(hmcts)"
+    whoami=$(echo `docker run ${tag}:${version} id ${hmctsUser}` | removeTrailingspaces)
 
-    if [[ "$whoami" != "1001" ]]; then
-        fatal "User $hmctsUser not found."
+    if [[ "$whoami" != "$expectedId" ]]; then
+        fatal "User $hmctsUser not as expected: $whoami | should be $expectedId"
     else
-        info "OK User $hmctsUser found"
+        info "OK User $hmctsUser as expected "
     fi
 }
 
