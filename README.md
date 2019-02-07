@@ -82,3 +82,7 @@ $ make
 ```
 
 This will generate the right tags so that you can use those images to build other nodejs-based projects open-sourced by HMCTS.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/hmcts/ccd-definition-designer-api/blob/master/LICENSE.md) file for details.
