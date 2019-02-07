@@ -12,15 +12,23 @@
 				docker·build·-t·$(.REGISTRY)/$(.TAG_PREFIX)/$(word $(x),$(.TAGS))·-f·$(word $(x),$(.CTX))/Dockerfile·.\
 			)
 
-EMPTY :=
-SPACE := $(EMPTY) $(EMPTY)
+.empty :=
+.space := $(.empty) $(.empty)
 
 define run-cmd
-$(subst ·,$(SPACE),$(1))
+$(subst ·,$(.space),$(1))
+
+endef
+
+define run-test
+@./test-build.sh $(.REGISTRY)/$(.TAG_PREFIX)/$(1)
 
 endef
 
 build:
 	$(foreach cmd,$(.COMMANDS),$(call run-cmd,$(cmd)))
 
-.phony: build
+test:
+	$(foreach tag,$(.TAGS),$(call run-test,$(tag)))
+
+.phony: build test
