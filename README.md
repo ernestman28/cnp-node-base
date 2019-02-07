@@ -4,12 +4,12 @@
 
 ## Images
 
-| Tag                                          | OS             | NodeJS version |
-| -------------------------------------------- | -------------- | -------------- |
-| `hmcts/base/node/alpine-lts-8:latest`        | Alpine 3.9     | LTS 8          |
-| `hmcts/base/node/alpine-lts-10:latest`       | Alpine 3.9     | LTS 10         |
-| `hmcts/base/node/stretch-slim-lts-8:latest`  | Debian stretch | LTS 8          |
-| `hmcts/base/node/stretch-slim-lts-10:latest` | Debian stretch | LTS 10         |
+| Tag                                                           | OS             | NodeJS version |
+| ------------------------------------------------------------- | -------------- | -------------- |
+| `hmcts.azurecr.io/hmcts/base/node/alpine-lts-8:latest`        | Alpine 3.9     | LTS 8          |
+| `hmcts.azurecr.io/hmcts/base/node/alpine-lts-10:latest`       | Alpine 3.9     | LTS 10         |
+| `hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-8:latest`  | Debian stretch | LTS 8          |
+| `hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-10:latest` | Debian stretch | LTS 10         |
 
 ## Background
 
