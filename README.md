@@ -63,12 +63,22 @@ COPY --from=build dist ./
 USER hmcts
 ```
 
-## Pulling base images locally
+## Pulling base images
 
 You will need to be authenticated to pull those images from ACR:
 
-```bash
+```shell
 $ az acr login --subscription <subscription ID> --name hmcts
 ```
 
 The subscription ID can be found when you log in to Azure. Make sure you use the non-prod one as AKS has hitherto been used on staging environments only.
+
+## Building images locally
+
+If you do not have the registry credentials, you can still build those images locally, using the `make` command:
+
+```shell
+$ make
+```
+
+This will generate the right tags so that you can use those images to build other nodejs-based projects open-sourced by HMCTS.
