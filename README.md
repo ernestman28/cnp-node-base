@@ -17,16 +17,16 @@ These images are based on nodeJS official ones using [LTS versions](https://gith
 
 Here are the defaults properties you inherit from using those base images:
 
-| Directive | Value                                                                                   |
-| --------- | --------------------------------------------------------------------------------------- |
-| `WORKDIR` | `/opt/app` (default), accessible as `$WORKDIR` as well                                  |
-| `CMD`     | `["yarn", "start"]` (default)                                                           |
-| `USER`    | - `root` (default)<br> - `hmcts` which you are entitled to use for your runtime process |
+| Directive | Default Values                               |
+| --------- | -------------------------------------------- |
+| `WORKDIR` | `/opt/app`, accessible as `$WORKDIR` as well |
+| `CMD`     | `["yarn", "start"]`                          |
+| `USER`    | `hmcts`                                      |
 
 _Nota Bene_:
 
 - These images are primarily aimed at application runtimes, nothing prevents the use of other intermediate images to build your projects.
-- By default when the image is initially launched it will run under the context of the `root` user. This is to help support the install of dependencies during the build phase. However you may switch to the `hmcts` user for the runtime processes.
+- By default when the image is initially launched it will run under the context of the `hmcts` user. However you may have to switch to the `root` user to install OS dependencies.
 - The distroless nodeJS base image has been ruled out as it is still [pretty experimental](https://github.com/GoogleContainerTools/distroless/#docker)
 
 ## Sample use
@@ -61,6 +61,24 @@ RUN yarn install && yarn build
 FROM base as runtime
 COPY --from=build dist ./
 USER hmcts
+```
+
+## Troubleshooting
+
+#### Permission issues when I install apk/apt dependencies
+
+Apk/apt packages installation requires the `root` user so you may switch temporarily to this user. e.g.:
+
+```Dockerfile
+### build image (Debian) ###
+FROM hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-10 as base
+
+USER root
+RUN apt-get update && apt-get install ...
+USER hmcts
+
+COPY package.json yarn.lock ./
+...
 ```
 
 ## Pulling base images
