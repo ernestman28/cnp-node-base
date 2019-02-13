@@ -10,4 +10,5 @@ RUN userdel node \
     && adduser --system --gid 1000 -uid 1000 --disabled-password --disabled-login $APP_USER \
     && chown -R $APP_USER:$APP_USER $WORKDIR
 
+USER hmcts
 CMD ["yarn", "start"]
