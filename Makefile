@@ -1,4 +1,4 @@
-.DEFAULT_GOAL: build
+.DEFAULT_GOAL:= build
 
 .REGISTRY = hmcts.azurecr.io
 .SANDBOX_REGISTRY = hmctssandbox.azurecr.io
