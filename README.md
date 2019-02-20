@@ -83,6 +83,12 @@ $ make
 
 This will generate the right tags so that you can use those images to build other nodejs-based projects open-sourced by HMCTS.
 
+## Building images for sandbox
+
+Sandbox is as its named, a _sandbox_ registry. Thus, the base images are not automatically pushed in the sandbox registry `hmctssandbox`.
+
+However you can though still push them from your workstation using the `make sandbox` command.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/hmcts/ccd-definition-designer-api/blob/master/LICENSE.md) file for details.
