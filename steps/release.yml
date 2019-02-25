@@ -2,23 +2,23 @@ steps:
   - task: Docker@1
     displayName: Container registry login
     inputs:
-      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       command: login
   - script: docker pull ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
     displayName: Pull tagged image
   - task: Docker@1
     displayName: Tag image
     inputs:
-      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
       arguments: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
       command: tag
   - task: Docker@1
     displayName: Push image
     inputs:
-      command: push
-      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
+      command: push
       imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
