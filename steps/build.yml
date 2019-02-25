@@ -1,9 +1,13 @@
+parameters:
+  azureContainerRegistry: hmcts.azurecr.io
+  azureSubscriptionEndpoint: azurerm-nonprod
+
 steps:
   - task: Docker@1
     displayName: Container registry login
     inputs:
-      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       command: login
 
   - task: CmdLine@2
@@ -17,9 +21,9 @@ steps:
   - task: Docker@1
     displayName: Build image
     inputs:
-      command: build
-      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
+      command: Build
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       dockerFile: ${{ parameters.imageDockerfilePath }}
       imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
 

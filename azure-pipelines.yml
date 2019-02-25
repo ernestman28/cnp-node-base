@@ -13,102 +13,111 @@ pr:
   - master
 
 jobs:
-  - job: buildAlpine_8
-    pool:
-      vmImage: "Ubuntu-16.04"
-    steps:
-      - template: steps/build.yml
-        parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
+  - job: Build
+    strategy:
+      matrix:
+        alpine-node-8:
+          displayName: Alpine NodeJS v8
           imageDockerfilePath: 8/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-8
-
-  - job: releaseAlpine_8
-    displayName: Release Alpine
-    dependsOn: buildAlpine_8
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
-    pool:
-      vmImage: Ubuntu 16.04
-    steps:
-      - template: steps/release.yml
-        parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
-          imageDockerfilePath: 8/alpine/Dockerfile
-          imageName: hmcts/base/node/alpine-lts-8
-
-  - job: buildAlpine_10
-    pool:
-      vmImage: "Ubuntu-16.04"
-    steps:
-      - template: steps/build.yml
-        parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
+        alpine-node-10:
+          displayName: Alpine NodeJS v10
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
-
-  - job: releaseAlpine_10
-    displayName: Release Alpine
-    dependsOn: buildAlpine_10
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
-    pool:
-      vmImage: Ubuntu 16.04
-    steps:
-      - template: steps/release.yml
-        parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
-          imageDockerfilePath: 10/alpine/Dockerfile
-          imageName: hmcts/base/node/alpine-lts-10
-
-  - job: buildSlimStretch_8
+        stretch-slim-node-8:
+          displayName: Stretch Slim NodeJS v8
+          imageDockerfilePath: 8/stretch-slim/Dockerfile
+          imageName: hmcts/base/node/stretch-slim-lts-8
+        stretch-slim-node-10:
+          displayName: Stretch Slim NodeJS v10
+          imageDockerfilePath: 10/stretch-slim/Dockerfile
+          imageName: hmcts/base/node/stretch-slim-lts-10
+    displayName: $(displayName)
     pool:
       vmImage: "Ubuntu-16.04"
     steps:
       - template: steps/build.yml
         parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
-          imageDockerfilePath: 8/stretch-slim/Dockerfile
-          imageName: hmcts/base/node/stretch-slim-lts-8
-
-  - job: releaseSlimStretch_8
-    displayName: Release SlimStretch
-    dependsOn: buildSlimStretch_8
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
-    pool:
-      vmImage: Ubuntu 16.04
-    steps:
-      - template: steps/release.yml
-        parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
-          imageDockerfilePath: 8/stretch-slim/Dockerfile
-          imageName: hmcts/base/node/stretch-slim-lts-8
-
-  - job: buildSlimStretch_10
-    pool:
-      vmImage: "Ubuntu-16.04"
-    steps:
-      - template: steps/build.yml
-        parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
-          imageDockerfilePath: 10/stretch-slim/Dockerfile
-          imageName: hmcts/base/node/stretch-slim-lts-10
-
-  - job: releaseSlimStretch_10
-    displayName: Release SlimStretch
-    dependsOn: buildSlimStretch_10
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
-    pool:
-      vmImage: Ubuntu 16.04
-    steps:
-      - template: steps/release.yml
-        parameters:
-          azureSubscriptionEndpoint: azurerm-nonprod
-          azureContainerRegistry: hmcts.azurecr.io
-          imageDockerfilePath: 10/stretch-slim/Dockerfile
-          imageName: hmcts/base/node/stretch-slim-lts-10
+          imageDockerfilePath: $(imageDockerfilePath)
+          imageName: $(imageName)
+#
+# - job: buildAlpine_8
+#   displayName: Build Alpine NodeJS v8
+#   pool:
+#     vmImage: "Ubuntu-16.04"
+#   steps:
+#     - template: steps/build.yml
+#       parameters:
+#         imageDockerfilePath: 8/alpine/Dockerfile
+#         imageName: hmcts/base/node/alpine-lts-8
+# - job: releaseAlpine_8
+#   displayName: Release Alpine NodeJS v8
+#   dependsOn: buildAlpine_8
+#   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+#   pool:
+#     vmImage: Ubuntu 16.04
+#   steps:
+#     - template: steps/release.yml
+#       parameters:
+#         imageDockerfilePath: 8/alpine/Dockerfile
+#         imageName: hmcts/base/node/alpine-lts-8
+# - job: buildAlpine_10
+#   displayName: Build Alpine NodeJS v10
+#   pool:
+#     vmImage: "Ubuntu-16.04"
+#   steps:
+#     - template: steps/build.yml
+#       parameters:
+#         imageDockerfilePath: 10/alpine/Dockerfile
+#         imageName: hmcts/base/node/alpine-lts-10
+# - job: releaseAlpine_10
+#   displayName: Release Alpine NodeJS v10
+#   dependsOn: buildAlpine_10
+#   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+#   pool:
+#     vmImage: Ubuntu 16.04
+#   steps:
+#     - template: steps/release.yml
+#       parameters:
+#         imageDockerfilePath: 10/alpine/Dockerfile
+#         imageName: hmcts/base/node/alpine-lts-10
+# - job: buildSlimStretch_8
+#   displayName: Build Slim Stretch NodeJS v8
+#   pool:
+#     vmImage: "Ubuntu-16.04"
+#   steps:
+#     - template: steps/build.yml
+#       parameters:
+#         imageDockerfilePath: 8/stretch-slim/Dockerfile
+#         imageName: hmcts/base/node/stretch-slim-lts-8
+# - job: releaseSlimStretch_8
+#   displayName: Release Slim Stretch NodeJS v8
+#   dependsOn: buildSlimStretch_8
+#   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+#   pool:
+#     vmImage: Ubuntu 16.04
+#   steps:
+#     - template: steps/release.yml
+#       parameters:
+#         imageDockerfilePath: 8/stretch-slim/Dockerfile
+#         imageName: hmcts/base/node/stretch-slim-lts-8
+# - job: buildSlimStretch_10
+#   displayName: Build Slim Stretch NodeJS v10
+#   pool:
+#     vmImage: "Ubuntu-16.04"
+#   steps:
+#     - template: steps/build.yml
+#       parameters:
+#         imageDockerfilePath: 10/stretch-slim/Dockerfile
+#         imageName: hmcts/base/node/stretch-slim-lts-10
+# - job: releaseSlimStretch_10
+#   displayName: Release Slim Stretch NodeJS v10
+#   dependsOn: buildSlimStretch_10
+#   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+#   pool:
+#     vmImage: Ubuntu 16.04
+#   steps:
+#     - template: steps/release.yml
+#       parameters:
+#         imageDockerfilePath: 10/stretch-slim/Dockerfile
+#         imageName: hmcts/base/node/stretch-slim-lts-10
