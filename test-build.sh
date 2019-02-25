@@ -33,7 +33,7 @@ testUser() {
 
     hmctsUser="hmcts"
     expectedId="uid=1000(hmcts) gid=1000(hmcts) groups=1000(hmcts)"
-    whoami=$(echo `docker run ${tag}:${version} id ${hmctsUser}` | removeTrailingspaces)
+    whoami=$(echo `docker run ${tag}:${version} id` | removeTrailingspaces)
 
     if [[ "$whoami" == *"$expectedId"* ]]; then
         info "OK User $hmctsUser as expected"

@@ -1,4 +1,4 @@
-.DEFAULT_GOAL: build
+.DEFAULT_GOAL:= build
 
 .REGISTRY = hmcts.azurecr.io
 .SANDBOX_REGISTRY = hmctssandbox.azurecr.io
@@ -18,7 +18,7 @@ define run-docker
 endef
 
 define run-test
-	@./test-build.sh $(.REGISTRY)/$(.NAMESPACES)/$(1)
+	@./test-build.sh $(.REGISTRY)/$(.NAMESPACES)/$(word 1,$(subst ►, ,$(1)))
 
 endef
 
@@ -42,7 +42,7 @@ build: ## Build locally the base images.
 	$(foreach ref,$(.REFS),$(call run-docker,$(ref)))
 
 test: ## Test basic properties of the images, e.g. user, workdir, default command.
-	$(foreach tag,$(.TAGS),$(call run-test,$(tag)))
+	$(foreach tag,$(.REFS),$(call run-test,$(tag)))
 
 sandbox: ## Tag the images and pushes them to hmctssandbox.azurecr.io sandbox ACR (make sure you are logged in).
 	$(foreach ref,$(.REFS),$(call push-sandbox,$(ref)))
