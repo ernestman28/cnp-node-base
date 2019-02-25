@@ -81,6 +81,16 @@ COPY package.json yarn.lock ./
 ...
 ```
 
+#### Yarn install fails because of permission issues
+
+Depending on the post-installation steps, some script might need permissions on files owned by the root user. If this is the case, you can copy files from the host as `hmcts` user:
+
+```Dockerfile
+...
+COPY --chown=hmcts:hmcts package.json yarn.lock .
+...
+```
+
 ## Pulling base images
 
 You will need to be authenticated to pull those images from ACR:
