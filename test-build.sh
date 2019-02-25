@@ -33,7 +33,7 @@ testUser() {
 
     hmctsUser="hmcts"
     expectedId="uid=1000(hmcts) gid=1000(hmcts) groups=1000(hmcts)"
-    whoami=$(echo `docker run ${tag}:${version} id` | removeTrailingspaces)
+    whoami=$(echo `docker run --rm ${tag}:${version} id` | removeTrailingspaces)
 
     if [[ "$whoami" == *"$expectedId"* ]]; then
         info "OK User $hmctsUser as expected"
@@ -47,7 +47,7 @@ testWorkdir() {
     local workDir
 
     defaultWorkdir="/opt/app"
-    workDir=$(echo `docker run ${tag}:${version} pwd` | removeTrailingspaces)
+    workDir=$(echo `docker run --rm ${tag}:${version} pwd` | removeTrailingspaces)
 
     if [[ "$workDir" != "$defaultWorkdir" ]]; then
         fatal "Workdir is not $defaultWorkdir. Workdir found: $workDir"
