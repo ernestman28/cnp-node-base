@@ -63,12 +63,12 @@ jobs:
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
+    dependsOn: Build
     pool:
       vmImage: $(vmImage)
     steps:
       - template: steps/release.yml
         parameters:
           imageName: $(imageName)
-          dependsOn: $(dependsOn)
           azureContainerRegistry: $(azureContainerRegistry)
           azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
