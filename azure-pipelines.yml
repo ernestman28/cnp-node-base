@@ -15,22 +15,22 @@ pr:
 variables:
   azureContainerRegistry: hmcts.azurecr.io
   azureSubscriptionEndpoint: azurerm-nonprod
-  vmImage: "Ubuntu-16.04"
+  vmImage: Ubuntu-16.04
 
 jobs:
   - job: Build
     strategy:
       matrix:
-        build-alpine-node-8:
+        alpine-node-8:
           imageDockerfilePath: 8/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-8
-        build-alpine-node-10:
+        alpine-node-10:
           imageDockerfilePath: 10/alpine/Dockerfile
           imageName: hmcts/base/node/alpine-lts-10
-        build-stretch-slim-node-8:
+        stretch-slim-node-8:
           imageDockerfilePath: 8/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-8
-        build-stretch-slim-node-10:
+        stretch-slim-node-10:
           imageDockerfilePath: 10/stretch-slim/Dockerfile
           imageName: hmcts/base/node/stretch-slim-lts-10
     pool:
@@ -44,26 +44,18 @@ jobs:
           azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
 
   - job: Release
+    dependsOn: Build
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
     strategy:
       matrix:
-        release-alpine-node-8:
-          dependsOn: build-alpine-node-8
-          imageDockerfilePath: 8/alpine/Dockerfile
+        alpine-node-8:
           imageName: hmcts/base/node/alpine-lts-8
-        release-alpine-node-10:
-          dependsOn: build-alpine-node-10
-          imageDockerfilePath: 10/alpine/Dockerfile
+        alpine-node-10:
           imageName: hmcts/base/node/alpine-lts-10
-        release-stretch-slim-node-8:
-          dependsOn: build-stretch-slim-node-8
-          imageDockerfilePath: 8/stretch-slim/Dockerfile
+        stretch-slim-node-8:
           imageName: hmcts/base/node/stretch-slim-lts-8
-        release-stretch-slim-node-10:
-          dependsOn: build-stretch-slim-node-10
-          imageDockerfilePath: 10/stretch-slim/Dockerfile
+        stretch-slim-node-10:
           imageName: hmcts/base/node/stretch-slim-lts-10
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master')) # Master branch only
-    dependsOn: Build
     pool:
       vmImage: $(vmImage)
     steps:
