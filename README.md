@@ -2,7 +2,16 @@
 
 [![Build Status](https://dev.azure.com/hmcts/CNP/_apis/build/status/NodeJS%20base%20image%20build?branchName=master)](https://dev.azure.com/hmcts/CNP/_build/latest?definitionId=97&branchName=master)
 
-## Images
+- [Images list](#images-list)
+- [Background](#background)
+- [Sample use](#sample-use)
+- [Troubleshooting](#troubleshooting)
+- [Pulling base images](#pulling-base-images)
+- [Building images locally](#building-images-locally)
+- [Building images for sandbox](#building-images-for-sandbox)
+- [License](#license)
+
+## Images list
 
 | Tag                                                           | OS             | NodeJS version |
 | ------------------------------------------------------------- | -------------- | -------------- |
