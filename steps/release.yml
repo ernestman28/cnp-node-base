@@ -1,7 +1,3 @@
-parameters:
-  azureContainerRegistry: hmcts.azurecr.io
-  azureSubscriptionEndpoint: azurerm-nonprod
-
 steps:
   - task: Docker@1
     displayName: Container registry login
