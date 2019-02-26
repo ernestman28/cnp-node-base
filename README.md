@@ -124,7 +124,7 @@ This will generate the right tags so that you can use those images to build othe
 
 Sandbox is as its named, a _sandbox_ registry. Thus, the base images are not automatically pushed in the sandbox registry `hmctssandbox`.
 
-However you can though still push them from your workstation using the following command:
+However you can still push them from your workstation using the following command:
 
 ```shell
 $ make sandbox
