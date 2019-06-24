@@ -1,4 +1,4 @@
-FROM node:10.15.1-alpine
+FROM hmctspublic.azurecr.io/hmcts/base/node/alpine-lts-10:10-alpine
 
 ENV APP_USER=hmcts \
   WORKDIR=/opt/app

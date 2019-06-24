@@ -1,4 +1,4 @@
-FROM node:8.15.0-stretch-slim
+FROM hmctspublic.azurecr.io/hmcts/base/node/stretch-slim-lts-8:8-stretch-slim
 
 ENV APP_USER=hmcts \
     WORKDIR=/opt/app
