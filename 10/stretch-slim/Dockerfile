@@ -1,4 +1,4 @@
-FROM hmctspublic.azurecr.io/hmcts/library/node-stretch-slim-lts-10:10-stretch-slim
+FROM hmctspublic.azurecr.io/imported/library/node-stretch-slim-lts-10:10-stretch-slim
 
 ENV APP_USER=hmcts \
     WORKDIR=/opt/app
