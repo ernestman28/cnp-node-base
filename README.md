@@ -13,12 +13,12 @@
 
 ## Images list
 
-| Tag                                                           | OS             | NodeJS version |
-| ------------------------------------------------------------- | -------------- | -------------- |
-| `hmcts.azurecr.io/hmcts/base/node/alpine-lts-8:latest`        | Alpine 3.9     | LTS 8          |
-| `hmcts.azurecr.io/hmcts/base/node/alpine-lts-10:latest`       | Alpine 3.9     | LTS 10         |
-| `hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-8:latest`  | Debian stretch | LTS 8          |
-| `hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-10:latest` | Debian stretch | LTS 10         |
+| Tag                                                                    | OS             | NodeJS version |
+| ---------------------------------------------------------------------- | -------------- | -------------- |
+| `hmctspublic.azurecr.io/base/node/alpine-lts-8:8-alpine`               | Alpine 3.9     | LTS 8          |
+| `hmctspublic.azurecr.io/base/node/alpine-lts-10:10-alpine`             | Alpine 3.9     | LTS 10         |
+| `hmctspublic.azurecr.io/base/node/stretch-slim-lts-8:8-stretch-slim`   | Debian stretch | LTS 8          |
+| `hmctspublic.azurecr.io/base/node/stretch-slim-lts-10:10-stretch-slim` | Debian stretch | LTS 10         |
 
 ## Background
 
@@ -42,7 +42,7 @@ _Nota Bene_:
 
 ```Dockerfile
 ### base image ###
-FROM hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-8 as base
+FROM hmctspublic.azurecr.io/base/node/stretch-slim-lts-8:8-stretch-slim as base
 COPY package.json yarn.lock ./
 RUN yarn install
 
@@ -57,12 +57,12 @@ You can also leverage on alpine distributions to create smaller runtime images:
 
 ```Dockerfile
 ### base image ###
-FROM hmcts.azurecr.io/hmcts/base/node/alpine-lts-10 as base
+FROM hmctspublic.azurecr.io/base/node/alpine-lts-10:10-alpine as base
 COPY package.json yarn.lock ./
 RUN yarn install --production
 
 ### build image (Debian) ###
-FROM hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-10 as build
+FROM hmctspublic.azurecr.io/base/node/stretch-slim-lts-10:10-stretch-slim as build
 COPY package.json yarn.lock ./
 RUN yarn install && yarn build
 
@@ -80,7 +80,7 @@ Apk/apt packages installation requires the `root` user so you may switch tempora
 
 ```Dockerfile
 ### build image (Debian) ###
-FROM hmcts.azurecr.io/hmcts/base/node/stretch-slim-lts-10 as base
+FROM hmctspublic.azurecr.io/base/node/stretch-slim-lts-10:10-stretch-slim as base
 
 USER root
 RUN apt-get update && apt-get install ...
