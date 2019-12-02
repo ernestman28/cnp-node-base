@@ -15,9 +15,9 @@
 
 | Tag                                                 | OS             | NodeJS version |
 | ----------------------------------------------------| -------------- | -------------- |
-| `hmctspublic.azurecr.io/base/node:8-alpine`         | Alpine 3.9     | LTS 8          |
-| `hmctspublic.azurecr.io/base/node:10-alpine`        | Alpine 3.9     | LTS 10         |
-| `hmctspublic.azurecr.io/base/node:12-alpine`        | Alpine 3.9     | LTS 10         |
+| `hmctspublic.azurecr.io/base/node:8-alpine`         | Alpine         | LTS 8          |
+| `hmctspublic.azurecr.io/base/node:10-alpine`        | Alpine         | LTS 10         |
+| `hmctspublic.azurecr.io/base/node:12-alpine`        | Alpine         | LTS 10         |
 | `hmctspublic.azurecr.io/base/node:8-stretch-slim`   | Debian stretch | LTS 8          |
 | `hmctspublic.azurecr.io/base/node:10-stretch-slim`  | Debian stretch | LTS 10         |
 | `hmctspublic.azurecr.io/base/node:12-stretch-slim`  | Debian stretch | LTS 12         |
