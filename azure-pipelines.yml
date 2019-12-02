@@ -23,27 +23,27 @@ jobs:
       matrix:
         alpine-node-8:
           imageDockerfilePath: 8/alpine/Dockerfile
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 8-alpine
         alpine-node-10:
           imageDockerfilePath: 10/alpine/Dockerfile
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 10-alpine
         alpine-node-12:
           imageDockerfilePath: 12/alpine/Dockerfile
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 12-alpine
         stretch-slim-node-8:
           imageDockerfilePath: 8/stretch-slim/Dockerfile
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 8-stretch-slim
         stretch-slim-node-10:
           imageDockerfilePath: 10/stretch-slim/Dockerfile
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 10-stretch-slim
         stretch-slim-node-12:
           imageDockerfilePath: 12/stretch-slim/Dockerfile
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 12-stretch-slim
     pool:
       vmImage: $(vmImage)
@@ -62,22 +62,22 @@ jobs:
     strategy:
       matrix:
         alpine-node-8:
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 8-alpine
         alpine-node-10:
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 10-alpine
         alpine-node-12:
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 12-alpine
         stretch-slim-node-8:
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 8-stretch-slim
         stretch-slim-node-10:
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 10-stretch-slim
         stretch-slim-node-12:
-          imageName: hmcts/base/node
+          imageName: base/node
           tag: 12-stretch-slim
     pool:
       vmImage: $(vmImage)
