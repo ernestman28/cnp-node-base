@@ -21,18 +21,18 @@ steps:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       dockerFile: ${{ parameters.imageDockerfilePath }}
-      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
+      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:${{ parameters.tag }}-$(Build.SourceVersion)
 
   - task: CmdLine@2
     displayName: Test image
     inputs:
       failOnStderr: true
-      script: ./test-build.sh ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }} $(Build.SourceVersion)
+      script: ./test-build.sh ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }} ${{ parameters.tag }}-$(Build.SourceVersion)
 
   - task: Docker@1
     displayName: Push image
     inputs:
       command: push
-      azureSubscriptionEndpoint: azurerm-nonprod
-      azureContainerRegistry: hmcts.azurecr.io
-      imageName: ${{ parameters.azureContainerRegistry }}/${{parameters.imageName}}:$(Build.SourceVersion)
+      azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
+      azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
+      imageName: ${{ parameters.azureContainerRegistry }}/${{parameters.imageName}}:${{ parameters.tag }}-$(Build.SourceVersion)

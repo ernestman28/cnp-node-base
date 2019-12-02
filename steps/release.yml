@@ -5,15 +5,15 @@ steps:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       command: login
-  - script: docker pull ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
+  - script: docker pull ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:${{ parameters.tag }}-$(Build.SourceVersion)
     displayName: Pull tagged image
   - task: Docker@1
     displayName: Tag image
     inputs:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
-      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:$(Build.SourceVersion)
-      arguments: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
+      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:${{ parameters.tag }}-$(Build.SourceVersion)
+      arguments: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:${{ parameters.tag }}
       command: tag
   - task: Docker@1
     displayName: Push image
@@ -21,4 +21,4 @@ steps:
       azureContainerRegistry: ${{ parameters.azureContainerRegistry }}
       azureSubscriptionEndpoint: ${{ parameters.azureSubscriptionEndpoint }}
       command: push
-      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:latest
+      imageName: ${{ parameters.azureContainerRegistry }}/${{ parameters.imageName }}:${{ parameters.tag }}

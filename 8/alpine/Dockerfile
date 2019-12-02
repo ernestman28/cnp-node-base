@@ -1,4 +1,4 @@
-FROM hmctspublic.azurecr.io/imported/library/node-alpine-lts-8:8-alpine
+FROM hmctspublic.azurecr.io/imported/library/node:8-alpine
 
 ENV APP_USER=hmcts \
   WORKDIR=/opt/app

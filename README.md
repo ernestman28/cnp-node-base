@@ -13,12 +13,14 @@
 
 ## Images list
 
-| Tag                                                                    | OS             | NodeJS version |
-| ---------------------------------------------------------------------- | -------------- | -------------- |
-| `hmctspublic.azurecr.io/base/node/alpine-lts-8:8-alpine`               | Alpine 3.9     | LTS 8          |
-| `hmctspublic.azurecr.io/base/node/alpine-lts-10:10-alpine`             | Alpine 3.9     | LTS 10         |
-| `hmctspublic.azurecr.io/base/node/stretch-slim-lts-8:8-stretch-slim`   | Debian stretch | LTS 8          |
-| `hmctspublic.azurecr.io/base/node/stretch-slim-lts-10:10-stretch-slim` | Debian stretch | LTS 10         |
+| Tag                                                 | OS             | NodeJS version |
+| ----------------------------------------------------| -------------- | -------------- |
+| `hmctspublic.azurecr.io/base/node:8-alpine`         | Alpine 3.9     | LTS 8          |
+| `hmctspublic.azurecr.io/base/node:10-alpine`        | Alpine 3.9     | LTS 10         |
+| `hmctspublic.azurecr.io/base/node:12-alpine`        | Alpine 3.9     | LTS 10         |
+| `hmctspublic.azurecr.io/base/node:8-stretch-slim`   | Debian stretch | LTS 8          |
+| `hmctspublic.azurecr.io/base/node:10-stretch-slim`  | Debian stretch | LTS 10         |
+| `hmctspublic.azurecr.io/base/node:12-stretch-slim`  | Debian stretch | LTS 12         |
 
 ## Background
 
@@ -42,7 +44,7 @@ _Nota Bene_:
 
 ```Dockerfile
 ### base image ###
-FROM hmctspublic.azurecr.io/base/node/stretch-slim-lts-8:8-stretch-slim as base
+FROM hmctspublic.azurecr.io/base/node:8-stretch-slim as base
 COPY package.json yarn.lock ./
 RUN yarn install
 
@@ -55,21 +57,40 @@ USER hmcts
 
 You can also leverage on alpine distributions to create smaller runtime images:
 
+Simple:
 ```Dockerfile
-### base image ###
-FROM hmctspublic.azurecr.io/base/node/alpine-lts-10:10-alpine as base
-COPY package.json yarn.lock ./
+# ---- Dependencies image ----
+FROM hmctspublic.azurecr.io/base/node:10-alpine as base
+COPY --chown=hmcts:hmcts package.json yarn.lock ./
 RUN yarn install --production
 
-### build image (Debian) ###
-FROM hmctspublic.azurecr.io/base/node/stretch-slim-lts-10:10-stretch-slim as build
-COPY package.json yarn.lock ./
-RUN yarn install && yarn build
-
-### runtime image (Alpine) ###
+# ---- Runtime image ----
 FROM base as runtime
-COPY --from=build dist ./
+COPY . .
+EXPOSE 3000
+```
+
+More complex example:
+```Dockerfile
+FROM hmctspublic.azurecr.io/base/node:10-alpine as base
+
+COPY package.json yarn.lock ./
+
+FROM base as build
+
+USER root
+RUN apk add python2 make g++
 USER hmcts
+
+RUN yarn && npm rebuild node-sass
+
+COPY . .
+RUN yarn setup && rm -r node_modules/ && yarn install --production && rm -r ~/.cache/yarn
+
+FROM base as runtime
+COPY --from=build $WORKDIR ./
+USER hmcts
+EXPOSE 3000
 ```
 
 ## Troubleshooting
@@ -80,7 +101,7 @@ Apk/apt packages installation requires the `root` user so you may switch tempora
 
 ```Dockerfile
 ### build image (Debian) ###
-FROM hmctspublic.azurecr.io/base/node/stretch-slim-lts-10:10-stretch-slim as base
+FROM hmctspublic.azurecr.io/base/node:10-stretch-slim as base
 
 USER root
 RUN apt-get update && apt-get install ...
@@ -100,25 +121,13 @@ COPY --chown=hmcts:hmcts package.json yarn.lock .
 ...
 ```
 
-## Pulling base images
-
-You will need to be authenticated to pull those images from ACR:
-
-```shell
-$ az acr login --subscription <subscription ID> --name hmcts
-```
-
-The subscription ID can be found when you log in to Azure. Make sure you use the non-prod one as AKS has hitherto been used on staging environments only.
-
 ## Building images locally
-
-If you do not have the registry credentials, you can still build those images locally, using the `make` command:
 
 ```shell
 $ make
 ```
 
-This will generate the right tags so that you can use those images to build other nodejs-based projects open-sourced by HMCTS.
+This will generate the right tags so that you can use those images to build other nodejs-based projects by HMCTS.
 
 ## Building images for sandbox
 
@@ -132,4 +141,4 @@ $ make sandbox
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/hmcts/ccd-definition-designer-api/blob/master/LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.

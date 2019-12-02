@@ -1,13 +1,15 @@
 .DEFAULT_GOAL:= build
 
-.REGISTRY = hmcts.azurecr.io
+.REGISTRY = hmctspublic.azurecr.io
 .SANDBOX_REGISTRY = hmctssandbox.azurecr.io
-.NAMESPACES	= hmcts/base/node
+.NAMESPACES	= base/node
 
 .REFS =	alpine-lts-8►8/alpine \
 		alpine-lts-10►10/alpine \
+		alpine-lts-12►12/alpine \
 		stretch-slim-lts-8►8/stretch-slim \
-		stretch-slim-lts-10►10/stretch-slim
+		stretch-slim-lts-10►10/stretch-slim \
+		stretch-slim-lts-12►12/stretch-slim
 
 define run-docker
 	docker build \
